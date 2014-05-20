@@ -32,6 +32,8 @@ interface dhcpPacketProcessor {
 
 class defaultPacketProcessor implements dhcpPacketProcessor {
 	function handleClientDiscover(dhcpServer $server, dhcpStorage $storage, dhcpPacket $packet, dhcpPacket $response) {
+		// $attributes = $storage->getAttributesForClient($packet->getMACAddress());
+		$attributes = $storage->getAttributesForClient($packet);
 		$response->setData('op', dhcpPacket::int2hex(2));
 		$response->setData('xid', $packet->getData('xid'));
 		$response->setData('yiaddr', dhcpPacket::ip2hex($attributes['yiaddr']));
@@ -41,14 +43,14 @@ class defaultPacketProcessor implements dhcpPacketProcessor {
 		$response->setData('subnet_mask', $attributes['subnet_mask']);
 		$response->setData('router', $attributes['router']);
 		$response->setData('lease_time', $attributes['lease_time']);
-		$response->setData('server_id', array(10, 2, 3, 5));
+		$response->setData('server_id', array(172, 20, 1, 2));
 		$response->setData('dns_server', $attributes['dns_server']);
 		
 		return true;
 	}
 	
 	function handleClientRequest(dhcpServer $server, dhcpStorage $storage, dhcpPacket $packet, dhcpPacket $response) {
-		$attributes = $storage->getAttributesForClient($packet->getMACAddress());
+		$attributes = $storage->getAttributesForClient($packet);
 		
 		$response->setData('op', dhcpPacket::int2hex(2));
 		$response->setData('xid', $packet->getData('xid'));
@@ -59,14 +61,14 @@ class defaultPacketProcessor implements dhcpPacketProcessor {
 		$response->setData('subnet_mask', $attributes['subnet_mask']);
 		$response->setData('router', $attributes['router']);
 		$response->setData('lease_time', $attributes['lease_time']);
-		$response->setData('server_id', array(10, 2, 3, 5));
+		$response->setData('server_id', array(172, 20, 1, 2));
 		$response->setData('dns_server', $attributes['dns_server']);
 
 		return true;
 	}
 	
 	function handleClientInform(dhcpServer $server, dhcpStorage $storage, dhcpPacket $packet, dhcpPacket $response) {
-		$attributes = $storage->getAttributesForClient($packet->getMACAddress());
+		$attributes = $storage->getAttributesForClient($packet);
 		
 		$response->setData('op', dhcpPacket::int2hex(2));
 		$response->setData('xid', $packet->getData('xid'));
@@ -75,7 +77,7 @@ class defaultPacketProcessor implements dhcpPacketProcessor {
 		$response->setData('message_type', 'ack');
 		$response->setData('subnet_mask', $attributes['subnet_mask']);
 		$response->setData('router', $attributes['router']);
-		$response->setData('server_id', array(10, 2, 3, 5));
+		$response->setData('server_id', array(172, 20, 1, 2));
 		$response->setData('dns_server', $attributes['dns_server']);
 
 		return true;
@@ -125,6 +127,9 @@ class dhcpRequestProcessor {
 		}
 		
 		$this->response = $handled ? $response : NULL;
+
+		$server->verbosity > 1 && print_r($response);
+
 	}
 	
 	function getResponse() {

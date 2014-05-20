@@ -250,6 +250,10 @@ class dhcpPacket {
     }
     
     public static function int2hex($int) {
+	return dechex($int);
+    }
+    
+    public static function _int2hex($int) {
         $hex = base_convert($int, 10, 16);
         // TODO: This is a quick hack. Fix this.
         if (strlen($hex) == 1) {

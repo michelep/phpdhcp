@@ -1,7 +1,11 @@
-phpdhcp
-: A DHCP server written in PHP
+========================================================================
+phpDHCPd
 
-Hacked out by Angelo DiNardi (angelo@dinardi.name)
+A DHCP server written in PHP with MySQL support.
+
+by O-Zone o-zone@zerozone.it 
+
+Heavy based on the work by Angelo DiNardi (angelo@dinardi.name)
 
 Contributed to by:
 Troy Anderson (troy@troyonline.com)
